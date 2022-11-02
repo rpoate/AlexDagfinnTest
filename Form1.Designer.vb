@@ -28,7 +28,7 @@ Partial Class Form1
         'HtmlEditZoople1
         '
         Me.HtmlEditZoople1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.HtmlEditZoople1.DefaultFontsize = 3
+        Me.HtmlEditZoople1.DefaultFontsize = 10
         Me.HtmlEditZoople1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.HtmlEditZoople1.Location = New System.Drawing.Point(0, 0)
         Me.HtmlEditZoople1.Name = "HtmlEditZoople1"

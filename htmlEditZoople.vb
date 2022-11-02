@@ -1,10 +1,17 @@
 ﻿Imports System.Drawing
+Imports System.Reflection
 Imports Zoople
 
 Public Class htmlEditZoople
 	Implements IDisposable
 
 	Public Shadows Event TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+	Public ReadOnly Property DocumentHTML As String
+		Get
+			Return oEdit.DocumentHTML
+		End Get
+	End Property
 
 	Private Sub SpellCheckButton_Click(sender As Object, e As EventArgs)
 		Me.oEdit.SpellCheckDocument(False)
@@ -22,7 +29,7 @@ Public Class htmlEditZoople
 			_defaultFont = value
 		End Set
 	End Property
-	Private _defaultFontSize As Integer = 3
+	Private _defaultFontSize As Integer = 10
 	Public Property DefaultFontsize() As Integer
 		Get
 			Return _defaultFontSize
@@ -52,8 +59,9 @@ Public Class htmlEditZoople
 		'	oEdit.DocumentHTML = "<font face='" & DefaultFontProperty.Name & "' size='" & DefaultFontsize & "'>" & _Text & "</font>"
 		'End If
 
-		SetExecCommand("FontName", False, DefaultFontProperty.Name)
-		SetExecCommand("FontSize", False, DefaultFontsize)
+		SetDefaultFontFamily(DefaultFontProperty, DefaultFontsize)
+		'SetExecCommand("FontName", False, DefaultFontProperty.Name)
+		'SetExecCommand("FontSize", False, DefaultFontsize)
 	End Sub
 
 	Private Sub htmlEditZoople_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -63,6 +71,12 @@ Public Class htmlEditZoople
 		oSpellCheckButton.Padding = New Padding(3)
 		AddHandler oSpellCheckButton.Click, AddressOf SpellCheckButton_Click
 
+		Dim oDefaultFontButton As ToolStripItem
+
+		oDefaultFontButton = Me.oEdit.ToolStripItems.Add("Font to Courier")
+		oDefaultFontButton.Padding = New Padding(3)
+		AddHandler oDefaultFontButton.Click, AddressOf DefFontClick
+
 		Me.oEdit.EnableInlineSpelling = True
 
 		' add some custom autotext replacements
@@ -70,16 +84,24 @@ Public Class htmlEditZoople
 		Me.oEdit.SpellingAutoCorrectionList.Add("td", "trademark")
 		Me.oEdit.SpellingAutoCorrectionList.Add("pp", "<span style='color:red'>pianissimo</span>")
 
+		Me.oEdit.FontSizesList = "5pt; 8pt; 10pt; 12pt; 15pt; 18pt;"
 		If _docComplete Then
 			Me.oEdit.SpellCheckDocument(False)
 		End If
+	End Sub
+
+	Private Sub DefFontClick(sender As Object, e As EventArgs)
+
+		oEdit.CSSText = "body {font-family: courier new;}"
 	End Sub
 
 	Public Sub SetDefaultFontFamily(fontFamily As FontFamily, fontSize As Integer)
 		_defaultFont = fontFamily
 		_defaultFontSize = fontSize
 
-		SetDefaultFontsInText()
+		oEdit.CSSText = "body {font-family: " & fontFamily.Name & "; font-size: " & fontSize & "pt;}"
+
+		'SetDefaultFontsInText()
 	End Sub
 
 	Public Sub InsertAtCursor(link As String, ed_InsertReplaceSelection As HTMLEditControl.ed_InsertType)

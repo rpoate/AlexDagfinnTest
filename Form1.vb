@@ -19,12 +19,13 @@ Public Class Form1
     End Sub
 
     Private Sub frmPrint_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        sEmailBody = HtmlEditZoople1.DocumentHTML
         If Not HtmlEditZoople1 Is Nothing Then HtmlEditZoople1.Dispose()
     End Sub
 
     Private Sub htmlEditZoople_TextChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles HtmlEditZoople1.TextChanged
 
-        If 1 = 1 Then
+        If 1 = 0 Then ' please refer to formclosing event
             sEmailBody = HtmlEditZoople1.Text
         End If
 
